@@ -1,0 +1,32 @@
+{
+  "name": "react-console",
+  "version": "0.0.1",
+  "description": "React component for creating a console",
+  "homepage": "https://github.com/lorensr/react-payment",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/revillan/console.git"
+  },
+  "devDependencies": {
+    "babel": "^6.5.2",
+    "babel-cli": "^6.11.4",
+    "babel-eslint": "^6.1.2",
+    "babel-preset-react": "^6.11.1",
+    "babel-preset-stage-0": "^6.5.0",
+    "react-scripts": "0.2.1",
+    "react-tap-event-plugin": "^1.0.0",
+    "react-lumberjack": "^2.0.0",
+    "react": "^15.2.1",
+    "react-dom": "^15.2.1"
+  },
+  "dependencies": {
+    "lodash": "^4.14.1",
+  },
+  "peerDependencies": {
+    "react": "^15.2.1",
+    "react-dom": "^15.2.1"
+  },
+  "eslintConfig": {
+    "extends": "./node_modules/react-scripts/config/eslint.js"
+  }
+}
