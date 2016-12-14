@@ -159,6 +159,7 @@
 	        });
 	      });
 	
+	      console.log(this.state.history);
 	      return _react2.default.createElement(
 	        'section',
 	        { id: 'console' },
@@ -169,10 +170,10 @@
 	        ),
 	        _react2.default.createElement(
 	          'form',
-	          { onSubmit: this.handleSubmit, onKeyPress: this.goThroughHistory },
+	          { onSubmit: this.handleSubmit, onKeyDown: this.goThroughHistory },
 	          '>',
 	          _react2.default.createElement('input', { type: 'text', value: this.state.prompt,
-	            onChange: this.handleChange, onKeyPress: this.goThroughHistory })
+	            onChange: this.handleChange })
 	        )
 	      );
 	    }

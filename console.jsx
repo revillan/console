@@ -84,16 +84,17 @@ class ReactConsole extends React.Component {
         }
       );
 
+      console.log(this.state.history);
     return (
       <section id="console">
         <div>
         {past}
         </div>
 
-        <form onSubmit={this.handleSubmit} onKeyPress={this.goThroughHistory} >
+        <form onSubmit={this.handleSubmit} onKeyDown={this.goThroughHistory} >
           >
           <input type="text" value={this.state.prompt}
-             onChange={this.handleChange} onKeyPress={this.goThroughHistory} >
+             onChange={this.handleChange}  >
           </input>
         </form>
       </section>
