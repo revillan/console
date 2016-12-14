@@ -56,15 +56,7 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _input_output = __webpack_require__(178);
-	
-	var _input_output2 = _interopRequireDefault(_input_output);
-	
-	var _input = __webpack_require__(204);
-	
-	var _input2 = _interopRequireDefault(_input);
-	
-	var _past_input = __webpack_require__(205);
+	var _past_input = __webpack_require__(178);
 	
 	var _past_input2 = _interopRequireDefault(_past_input);
 	
@@ -84,10 +76,16 @@
 	
 	    var _this = _possibleConstructorReturn(this, (ReactConsole.__proto__ || Object.getPrototypeOf(ReactConsole)).call(this, props));
 	
-	    _this.state = { prompt: '', output: '', history: _this.props.history };
+	    _this.state = {
+	      prompt: '',
+	      output: '',
+	      history: _this.props.history,
+	      place: _this.props.history.length
+	    };
 	
 	    _this.handleChange = _this.handleChange.bind(_this);
 	    _this.handleSubmit = _this.handleSubmit.bind(_this);
+	    _this.goThroughHistory = _this.goThroughHistory.bind(_this);
 	    return _this;
 	  }
 	
@@ -99,21 +97,48 @@
 	  }, {
 	    key: 'handleSubmit',
 	    value: function handleSubmit(e) {
-	      e.preventDefault();
-	      var that = this;
-	      // let evaluate = new Promise(
-	      //   function(resolve, reject) {
-	      that.setState({ output: that.props.callback(that.state.prompt) }, function () {
-	        that.appendHistory(that.state.prompt, that.state.output);
-	        that.setState({ prompt: '', output: '' });
-	      });
-	      //   }
-	      // );
+	      var _this2 = this;
 	
-	      // evaluate.then(that.appendHistory(that.state.prompt, that.state.output));
-	      // evaluate.then(
-	      //   this.setState({prompt: '', output: ''})
-	      // );
+	      e.preventDefault();
+	
+	      if (this.state.place === this.state.history.length) {
+	        this.setState({ output: this.props.callback(this.state.prompt) }, function () {
+	          _this2.appendHistory(_this2.state.prompt, _this2.state.output);
+	          var length = _this2.state.history.length;
+	          _this2.setState({ prompt: '', output: '', place: length });
+	        });
+	      } else {
+	        this.setState({ output: this.state.history[this.state.place][this.state.prompt] }, function () {
+	          return _this2.resetInput();
+	        });
+	      }
+	    }
+	  }, {
+	    key: 'goThroughHistory',
+	    value: function goThroughHistory(e) {
+	      var newPlace = void 0;
+	      if (e.keyCode === 40 && this.state.place < this.state.history.length) {
+	        // Down key
+	        newPlace = this.state.place + 1;
+	        if (newPlace === this.state.history.length) {
+	          this.setState({ place: newPlace, prompt: '' });
+	        } else {
+	          this.setState({ place: newPlace,
+	            prompt: Object.keys(this.state.history[newPlace]) });
+	        }
+	      } else if (e.keyCode === 38 && this.state.place > 0) {
+	        // up key
+	        newPlace = this.state.place - 1;
+	        this.setState({ place: newPlace,
+	          prompt: Object.keys(this.state.history[newPlace]) });
+	      }
+	    }
+	  }, {
+	    key: 'resetInput',
+	    value: function resetInput() {
+	      this.appendHistory(this.state.prompt, this.state.output);
+	      var length = this.state.history.length;
+	      this.setState({ prompt: '', output: '', place: length });
 	    }
 	  }, {
 	    key: 'appendHistory',
@@ -128,13 +153,12 @@
 	    key: 'render',
 	    value: function render() {
 	      var past = [];
-	      this.state.history.map(function (arr) {
+	      this.state.history.map(function (arr, idx) {
 	        Object.keys(arr).map(function (input) {
-	          past.push(_react2.default.createElement(_past_input2.default, { prompt: input, output: arr[input], key: input }));
+	          past.push(_react2.default.createElement(_past_input2.default, { prompt: input, output: arr[input], key: idx }));
 	        });
 	      });
-	      // <Input callback={ (x) => x } />
-	      // <p>{this.state.output}</p>
+	
 	      return _react2.default.createElement(
 	        'section',
 	        { id: 'console' },
@@ -145,9 +169,10 @@
 	        ),
 	        _react2.default.createElement(
 	          'form',
-	          { onSubmit: this.handleSubmit },
-	          '> ',
-	          _react2.default.createElement('input', { type: 'text', onChange: this.handleChange })
+	          { onSubmit: this.handleSubmit, onKeyPress: this.goThroughHistory },
+	          '>',
+	          _react2.default.createElement('input', { type: 'text', value: this.state.prompt,
+	            onChange: this.handleChange, onKeyPress: this.goThroughHistory })
 	        )
 	      );
 	    }
@@ -21577,155 +21602,6 @@
 
 /***/ },
 /* 178 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _input = __webpack_require__(204);
-	
-	var _input2 = _interopRequireDefault(_input);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var IOPair = function (_React$Component) {
-	  _inherits(IOPair, _React$Component);
-	
-	  function IOPair(props) {
-	    _classCallCheck(this, IOPair);
-	
-	    return _possibleConstructorReturn(this, (IOPair.__proto__ || Object.getPrototypeOf(IOPair)).call(this, props));
-	  }
-	
-	  _createClass(IOPair, [{
-	    key: 'findOutput',
-	    value: function findOutput() {}
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(_input2.default, null);
-	    }
-	  }]);
-	
-	  return IOPair;
-	}(_react2.default.Component);
-	
-	exports.default = IOPair;
-
-/***/ },
-/* 179 */,
-/* 180 */,
-/* 181 */,
-/* 182 */,
-/* 183 */,
-/* 184 */,
-/* 185 */,
-/* 186 */,
-/* 187 */,
-/* 188 */,
-/* 189 */,
-/* 190 */,
-/* 191 */,
-/* 192 */,
-/* 193 */,
-/* 194 */,
-/* 195 */,
-/* 196 */,
-/* 197 */,
-/* 198 */,
-/* 199 */,
-/* 200 */,
-/* 201 */,
-/* 202 */,
-/* 203 */,
-/* 204 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var Input = function (_React$Component) {
-	  _inherits(Input, _React$Component);
-	
-	  function Input(props) {
-	    _classCallCheck(this, Input);
-	
-	    var _this = _possibleConstructorReturn(this, (Input.__proto__ || Object.getPrototypeOf(Input)).call(this, props));
-	
-	    _this.state = { prompt: '', output: '' };
-	
-	    _this.handleChange = _this.handleChange.bind(_this);
-	    _this.handleSubmit = _this.handleSubmit.bind(_this);
-	    return _this;
-	  }
-	
-	  _createClass(Input, [{
-	    key: 'handleChange',
-	    value: function handleChange(e) {
-	      this.setState({ prompt: e.target.value });
-	    }
-	  }, {
-	    key: 'handleSubmit',
-	    value: function handleSubmit(e) {
-	      e.preventDefault();
-	      this.setState({ output: this.props.callback(this.state.prompt) });
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'form',
-	        { onSubmit: this.handleSubmit },
-	        '> ',
-	        _react2.default.createElement('input', { type: 'text', onChange: this.handleChange }),
-	        _react2.default.createElement(
-	          'p',
-	          null,
-	          this.state.output
-	        )
-	      );
-	    }
-	  }]);
-	
-	  return Input;
-	}(_react2.default.Component);
-	
-	exports.default = Input;
-
-/***/ },
-/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
