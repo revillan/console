@@ -1,7 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import PastInput from './past_input';
-
 
 class ReactConsole extends React.Component {
 
@@ -26,7 +24,6 @@ class ReactConsole extends React.Component {
 
   handleSubmit(e){
     e.preventDefault();
-
     if (this.state.place === this.state.history.length) {
       this.setState({ output: this.props.callback(this.state.prompt) },
         () => {
@@ -104,11 +101,4 @@ class ReactConsole extends React.Component {
 
 }
 
-const element = <h1>Hello, world</h1>;
-document.addEventListener("DOMContentLoaded", () =>
-  ReactDOM.render(
-    <ReactConsole history={[ {"asdf": "dsf"}, {"asf": "asd"} ]}
-      callback={ (x) => x } />,
-    document.getElementById('root')
-  )
-);
+export default ReactConsole;

@@ -1,9 +1,8 @@
 const path = require('path');
 module.exports = {
   context: __dirname,
-  entry: './console.jsx',
+  entry: './index.js',
   output: {
-    // path: path.join(__dirname, 'app', 'assets', 'javascripts'),
     filename: 'bundle.js'
   },
   resolve: {
