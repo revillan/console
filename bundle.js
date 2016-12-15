@@ -21583,7 +21583,6 @@
 	        });
 	      });
 	
-	      console.log(this.state.history);
 	      return _react2.default.createElement(
 	        'section',
 	        { id: 'console' },

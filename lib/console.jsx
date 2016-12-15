@@ -80,8 +80,7 @@ class ReactConsole extends React.Component {
           });
         }
       );
-
-      console.log(this.state.history);
+      
     return (
       <section id="console">
         <div>
